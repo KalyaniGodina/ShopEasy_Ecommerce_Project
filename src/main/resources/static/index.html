@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShopEasy - Online Store</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">Shop<span>Easy</span></a>
+    <input id="search" type="search" placeholder="Search products or brands...">
+    <div id="authArea" class="auth-area"></div>
+    <button id="cartBtn" class="cart-btn">Cart <span id="cartCount">0</span></button>
+  </header>
+
+  <section class="filters">
+    <select id="category"><option value="">All categories</option></select>
+    <select id="brand"><option value="">All brands</option></select>
+    <select id="sort">
+      <option value="">Sort: Featured</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+      <option value="rating">Top rated</option>
+    </select>
+  </section>
+
+  <main>
+    <div id="status" class="status"></div>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <div id="overlay" class="overlay hidden"></div>
+  <aside id="cart" class="cart hidden">
+    <div class="cart-head"><h2>Your Cart</h2><button id="closeCart" class="icon-btn">&times;</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-foot">
+      <div class="total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+      <button id="checkoutBtn" class="primary">Checkout</button>
+    </div>
+  </aside>
+
+  <div id="checkoutModal" class="modal hidden">
+    <form id="checkoutForm" class="modal-card">
+      <h2>Checkout</h2>
+      <input name="customerName" placeholder="Full name" required>
+      <input name="email" type="email" placeholder="Email" required>
+      <input name="phone" placeholder="Phone">
+      <textarea name="address" placeholder="Delivery address" rows="3" required></textarea>
+      <div id="checkoutError" class="error"></div>
+      <div class="modal-actions">
+        <button type="button" id="cancelCheckout">Cancel</button>
+        <button type="submit" class="primary">Place order</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>

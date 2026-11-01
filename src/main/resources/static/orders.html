@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My orders - ShopEasy</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">Shop<span>Easy</span></a>
+    <div class="spacer"></div>
+    <div id="authArea" class="auth-area"></div>
+  </header>
+  <main class="orders-wrap">
+    <h1>My orders</h1>
+    <div id="orders" class="orders"><p class="status">Loading...</p></div>
+  </main>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const money = (n) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    async function init() {
+      const me = await (await fetch("/api/auth/me")).json();
+      if (!me.authenticated) { location.replace("/login.html?next=/orders.html"); return; }
+      $("#authArea").innerHTML =
+        `<span class="hello">Hi, ${esc(me.name.split(" ")[0])}</span><a href="/">Shop</a><button id="logoutBtn" class="linkbtn">Sign out</button>`;
+      $("#logoutBtn").onclick = async () => { await fetch("/api/auth/logout", { method: "POST" }); location.href = "/"; };
+
+      const res = await fetch("/api/orders/my");
+      if (res.status === 401) { location.replace("/login.html?next=/orders.html"); return; }
+      const orders = await res.json();
+      $("#orders").innerHTML = orders.length ? orders.map((o) => `
+        <article class="order">
+          <div class="order-head">
+            <div><strong>Order #${o.id}</strong><div class="muted">${new Date(o.createdAt).toLocaleString("en-IN")}</div></div>
+            <div class="order-right"><span class="badge">${esc(o.status)}</span><strong>${money(o.total)}</strong></div>
+          </div>
+          <ul>${o.items.map((i) => `<li><span>${esc(i.productName)} <span class="muted">(Size ${esc(i.size)})</span></span><span>${i.quantity} × ${money(i.unitPrice)}</span></li>`).join("")}</ul>
+          <div class="muted">Deliver to: ${esc(o.address)}</div>
+        </article>`).join("")
+        : `<p class="status">You have not placed any orders yet. <a href="/">Start shopping</a></p>`;
+    }
+    init().catch(() => { $("#orders").innerHTML = `<p class="status">Could not load your orders.</p>`; });
+  </script>
+</body>
+</html>

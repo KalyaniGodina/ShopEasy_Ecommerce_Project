@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in - ShopEasy</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="logo" href="/">Shop<span>Easy</span></a>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to your account to checkout and track orders.</p>
+    <form id="loginForm" novalidate>
+      <label>Email
+        <input name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+      </label>
+      <label>Password
+        <div class="pw">
+          <input name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+          <button type="button" class="show-pw" data-toggle>Show</button>
+        </div>
+      </label>
+      <div id="authError" class="error" role="alert"></div>
+      <button class="primary" type="submit">Sign in</button>
+    </form>
+    <p class="switch">New to ShopEasy? <a id="otherLink" href="/signup.html">Create an account</a></p>
+    <p class="switch"><a href="/">&larr; Continue shopping</a></p>
+  </main>
+  <script src="/js/auth.js"></script>
+</body>
+</html>
